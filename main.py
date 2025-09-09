@@ -10,12 +10,16 @@ def read_data(data_path: str) -> pd.DataFrame:
         print(f"Error: {data_path} not found.")
         return None
     
+def add_rnd_col(start: float, end: float, num: int) -> pd.Series:
+    new_col = np.random.uniform(start, end, num)
+    return new_col.astype(pd.Series)
+    
 def stats(feature: pd.Series, method: str) -> float:
     method = method.lower().strip()
     if method == 'mean':
-        return feature.mean()
+        return np.mean(feature)
     elif method == 'std':
-        return feature.std()
+        return np.std(feature)
     elif method == 'describe' or method == '':
         return feature.describe()
     else:
@@ -25,5 +29,7 @@ if __name__ == '__main__':
 
     df = read_data("data/car.csv")
 
-    print(stats(df["Speed"], 'mean'))
+    df['Rnd_Col'] = add_rnd_col(0.0, 10.0, len(df))
+
+    print(df)
     
